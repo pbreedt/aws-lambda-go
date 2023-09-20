@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"testing"
 )
@@ -9,7 +10,7 @@ import (
 
 func TestMessage(t *testing.T) {
 	event := MyEvent{Name: "Jan", Age: 10}
-	resp, _ := HandleLambdaEvent(event)
+	resp, _ := HandleLambdaEvent(context.Background(), event)
 	if resp.Message != "Jan is 10 years old!" {
 		t.Errorf("Msg was incorrect, got: %s, want: %s.", resp.Message, "Jan is 10 years old!")
 	}

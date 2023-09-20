@@ -1,24 +1,25 @@
 package main
- 
+
 import (
-        "fmt"
-        "github.com/aws/aws-lambda-go/lambda"
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
-type MyEvent struct {
-        Name string `json:"name"`
-        Age int     `json:"age"`
-}
- 
-type MyResponse struct {
-        Message string `json:"message"`
-}
- 
-func HandleLambdaEvent(event MyEvent) (MyResponse, error) {
-        return MyResponse{Message: fmt.Sprintf("%s is %d years old!", event.Name, event.Age)}, nil
-}
- 
-func main() {
-        lambda.Start(HandleLambdaEvent)
+// event is actually of type events.LambdaFunctionURLRequest
+type AmzEvent struct {
+	Body string `json:"body"`
 }
 
+type MyEvent struct {
+	Name string `json:"name"`
+}
+
+func HandleRequest(ctx context.Context, evt AmzEvent) (string, error) {
+	return fmt.Sprintf("Hello %s!", evt.Body), nil
+}
+
+func main() {
+	lambda.Start(HandleRequest)
+}
